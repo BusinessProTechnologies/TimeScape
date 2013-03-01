@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/showPhoto"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:visibility="visible"
+        android:layout_weight="1" />
+
+    <RelativeLayout
+        android:id="@+id/relv_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/showPhoto"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/keepBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:minWidth="200px"
+            android:text="Keep" />
+
+        <Button
+            android:id="@+id/deleteBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:minWidth="200px"
+            android:text="Delete" />
+    </RelativeLayout>
+
+</RelativeLayout>
