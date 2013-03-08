@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:background="@drawable/inner_bg1" >
+    <RelativeLayout 
+        android:id="@+id/linearList"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:paddingBottom="150dp"
+    >
+    <ListView
+        android:id="@+id/projectList"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:descendantFocusability="beforeDescendants"
+        android:divider="#FFAAAAAA"
+        android:background="#FFFFFF"
+        android:dividerHeight="1dp"
+        android:footerDividersEnabled="false"
+        android:headerDividersEnabled="false"
+        android:scrollingCache="false"
+        
+         >
+        <!-- 
+        android:visibility="gone" -->
+    </ListView>
+
+    <TextView
+        android:id="@+id/txtNoProj"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal"
+        android:text="Your Library is currently Empty"
+        android:textColor="@color/black"
+        android:visibility="invisible"
+         />
+
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/rel_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@drawable/lower_tab" >
+
+        <ImageView
+            android:id="@+id/cancelExProj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:text="Cancel"
+            android:background="@drawable/cancelselector"
+             />
+        <!-- android:src="@drawable/cancel_button" -->
+        <TextView 
+            android:id="@+id/txtExProj"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+
+        <Button
+            android:id="@+id/editExProjBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="Edit"
+             />
+    </RelativeLayout>
+    
+    <ImageView 
+        android:id="@+id/strtProj"
+        android:layout_above="@id/rel_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        />
+
+</RelativeLayout>

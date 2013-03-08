@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:id="@+id/projImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="10dp"
+        android:padding="2dip"
+    	android:background="#ffffff"
+    	android:layout_centerVertical="true"
+        android:src="@drawable/adamlimmer" />
+
+    <TextView
+        android:id="@+id/projName"
+        android:layout_toRightOf="@id/projImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="XYZ"
+        android:textStyle="bold"
+        android:layout_centerVertical="true" />
+    
+      <ImageView
+        android:id="@+id/imgArrow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/arrow"
+         />
+
+    <TextView
+        android:id="@+id/imgNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/imgArrow"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="5" />
+
+  
+    <ImageView 
+        android:id="@+id/projDel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/delete_1"
+        android:visibility="invisible" />
+
+</RelativeLayout>
