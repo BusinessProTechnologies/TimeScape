@@ -114,6 +114,7 @@ public class CreateMorphActivity extends Activity implements OnClickListener {
 							MultiPhotoSelectActivity.class);
 					//Log.i("morphname", _morphName);
 					intent.putExtra("morphName", projectName);
+					intent.putExtra("update", 0);
 					startActivity(intent);
 				}
 			});
@@ -123,7 +124,7 @@ public class CreateMorphActivity extends Activity implements OnClickListener {
 				@Override
 				public void onClick(View v) {
 					Intent intent = new Intent(CreateMorphActivity.this,
-							PhotoIntentActivity.class);
+							CapturePhotoActivity.class);
 					intent.putExtra("morphName", projectName);
 					startActivity(intent);
 				}

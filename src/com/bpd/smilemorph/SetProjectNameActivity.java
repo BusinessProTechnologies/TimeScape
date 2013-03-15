@@ -34,15 +34,17 @@ public class SetProjectNameActivity extends Activity implements OnClickListener 
 		nextBtn.setOnClickListener(this);
 		cancelBtn = (ImageView) findViewById(R.id.cancelProjName);
 		cancelBtn.setOnClickListener(this);
-		myDbHelper = new DatabaseHandler(this);
-		myDbHelper.initializeDataBase();
-		db = myDbHelper.getWritableDatabase();
+		
 	}
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.nextBtn) {
+			myDbHelper = new DatabaseHandler(this);
+			myDbHelper.initializeDataBase();
+			db = myDbHelper.getWritableDatabase();
 			projName = projectName.getText().toString(); 
 			Cursor cursor = db.rawQuery("SELECT * FROM " + ProjectEntity.TABLE_NAME + " WHERE morphname = '"+ projName + "';", null);
+			
 			if(cursor.moveToFirst()){ 
 				//if (cursor.getString(cursor.getColumnIndex("morphname")).equals(projName)){
 				Toast.makeText(SetProjectNameActivity.this, "Oops Name already Exist", Toast.LENGTH_SHORT).show();
@@ -70,6 +72,8 @@ public class SetProjectNameActivity extends Activity implements OnClickListener 
 			}
 		//}
 			}
+			myDbHelper.close();
+			db.close();
 		}else if(v.getId() == R.id.cancelProjName) {
 			finish();
 		}

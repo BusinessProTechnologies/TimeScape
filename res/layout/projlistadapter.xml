@@ -20,6 +20,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="XYZ"
+        android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_centerVertical="true" />
     
@@ -47,7 +48,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/delete_1"
+        android:src="@drawable/deleteprojselector"
+        android:paddingRight="10dp"
         android:visibility="invisible" />
 
 </RelativeLayout>

@@ -8,7 +8,7 @@
         android:id="@+id/relativeLayoutHeader"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp" >
+        android:background="@drawable/heading2" >
 
         <TextView
             android:id="@+id/noImgs"
@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:paddingLeft="12dp"
             android:text="5" />
 
         <TextView
@@ -27,12 +28,13 @@
             android:textColor="@color/black"
             android:text="ProjectName" />
         <ImageView 
-            android:id="@+id/editBtn"
+            android:id="@+id/settingsBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/remove"
+            android:src="@drawable/setting"
+            android:paddingRight="12dp"
             />
         
     </RelativeLayout>
@@ -62,7 +64,8 @@
         android:layout_below="@id/relativeLayoutHeader"
         android:layout_toLeftOf="@id/linearLayoutAdder"
         android:layout_above="@id/relativeLayoutFooter"
-        android:overScrollMode="always" />
+        android:overScrollMode="always"
+        android:layout_marginBottom="12dp" />
     <LinearLayout
         android:id="@+id/relativeLayoutFooter"
         android:layout_width="fill_parent"
