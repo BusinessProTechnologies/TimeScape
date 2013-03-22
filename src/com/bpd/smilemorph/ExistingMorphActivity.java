@@ -94,7 +94,6 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 			Integer projId = (Integer) v.getTag();
 			Cursor cursor = db.rawQuery("SELECT * FROM " +  ProjectEntity.TABLE_NAME + " WHERE id = "+ projId + ";", null);
 			if(cursor.moveToFirst()){ 
-			//Log.i("morphName",cursor.getString(cursor.getColumnIndex("morphname")));
 			morphName = cursor.getString(cursor.getColumnIndex("morphname"));
 			imageString = cursor.getString(cursor.getColumnIndex("imagestring"));
 			}else{
@@ -103,10 +102,10 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 		    }
 			myDbHelper.close();
 			db.close();
-			//Log.i("morphName",morphName);
 			Intent intent = new Intent(ExistingMorphActivity.this, SelectedImageActivity.class);
 			intent.putExtra("imageString", imageString);
 			intent.putExtra("projectName", morphName); 
+			finish();
 			startActivity(intent);
 		 }
 		});
@@ -128,7 +127,6 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 				do{
 					
 					project = new ProjectEntity();
-					//Log.i("sss", cursor.getString(cursor.getColumnIndex("id"))+"");
 					project.setID(Integer.parseInt(cursor.getString(cursor.getColumnIndex("id"))));//c.getColumnIndex("FirstName")
 					project.setName(cursor.getString(cursor.getColumnIndex("morphname")));
 					project.setImgString(cursor.getString(cursor.getColumnIndex("imagestring")));
@@ -196,13 +194,6 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 		    final int id = values.get(position).getID();
 		    String imgString = values.get(position).getImgString();
 		    String[] separated = imgString.replace("|", ",").split(",");
-		    //Log.i("1stimg", separated[0]);
-		    /*String imageName = separated[0].substring(
-					separated[0].lastIndexOf("/") + 1,
-					separated[0].length());
-		    Log.i("1stimgsize", imageName.getBytes()+"");*/
-		    //Bitmap ThumbImage = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(separated[0]), 60, 60);
-		    
 		    BitmapFactory.Options bfo = new BitmapFactory.Options();  
 		    bfo.inSampleSize = 8;   
 		    Bitmap ThumbImage = BitmapFactory.decodeFile(separated[0],bfo); 
@@ -260,13 +251,6 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 			        	  }
 			        	});
 					adb.show(); 
-					/*Cursor cursor = db.rawQuery("SELECT morphname FROM " +  ProjectEntity.TABLE_NAME + " WHERE id = "+ id + ";", null);
-					if(cursor.moveToFirst()){ 
-					Log.i("morphName",cursor.getString(cursor.getColumnIndex("morphname")));
-					morphName = cursor.getString(cursor.getColumnIndex("morphname"));
-					imageString = cursor.getString(cursor.getColumnIndex("imagestring"));
-					}*/
-					
 				}
 			});
 		    
@@ -300,6 +284,7 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 			finish();
 		}else if(v.getId() == R.id.strtProj) {
 			Intent intent = new Intent(ExistingMorphActivity.this, SetProjectNameActivity.class);
+			finish();
 			startActivity(intent);
 		}else if(v.getId() == R.id.editExProjBtn){
 			showDelete = true;
@@ -318,8 +303,6 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 	}
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		Log.i("HA", "Finishing");
-		// Toast.makeText(ActivityResturantList.this,"hiiiiiiiii",Toast.LENGTH_LONG).show();
-
 		if (isTaskRoot()&&(keyCode == KeyEvent.KEYCODE_BACK)) {
 			// Ask the user if they want to quit
 			new AlertDialog.Builder(this)

@@ -4,8 +4,10 @@ package com.bpd.smilemorph;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -14,16 +16,13 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ViewSwitcher;
 
 public class PlayMorphActivity extends Activity implements OnClickListener{
 
 	private Handler mHandler;
-	private String imageString;
+	private String imageString,projectName;
 	private String[] separated;
 	ImageView closeView,playView,pouseView,shareView,image,image_nxt;
 	final Context context = this;
@@ -31,6 +30,7 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
 	Thread newThread;
 	MyThread play_img_thread;
 	Boolean flag,start_chk;
+	View[] vw;
 	
 	ViewSwitcher switcher;
 	@Override
@@ -44,11 +44,11 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
 		newThread = new Thread(play_img_thread);
 		newThread.start();
 		play_img_thread.start();
-		
 		play_img_thread.pause();
 		
 		Bundle extras = getIntent().getExtras();
 		imageString = extras.getString("imageString");
+		projectName = extras.getString("projectName");
 		separated = imageString.replace("|", ",").split(",");
 		
 		image = (ImageView) findViewById(R.id.image);
@@ -105,11 +105,13 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
 				@Override
 				public void onClick(View v) {
 
-					/*Intent intent = new Intent(CreateMorphActivity.this,
-							MultiPhotoSelectActivity.class);
+					Intent intent = new Intent(PlayMorphActivity.this,
+							createVideoActivity.class);
 					//Log.i("morphname", _morphName);
-					intent.putExtra("morphName", projectName);
-					startActivity(intent);*/
+					intent.putExtra("imageString", imageString);
+					intent.putExtra("projectName", projectName); 
+					
+					startActivity(intent);
 				}
 			});
 			ImageView utubeBtn = (ImageView) dialog
@@ -181,48 +183,9 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
 			
 		}
 	}
-	/*private void startAnimation() {
-		
-		play_img_thread = new Thread(new Runnable() {
-	        @Override
-	        public void run() {
-	            // TODO Auto-generated method stub
-	            while (flag) {
-	                try {
-	                    Thread.sleep(1000);
-	                    mHandler.post(new Runnable() {
-
-	                        @Override
-	                        public void run() {
-	                         if(count_img_play < separated.length){	
-	                        	 overridePendingTransition(R.anim.fadein, R.anim.fadeout); 
-	                        	
-	                        	BitmapFactory.Options bfo = new BitmapFactory.Options();  
-	                		    bfo.inSampleSize = 8;   
-	                		    Bitmap ThumbImage = BitmapFactory.decodeFile(separated[count_img_play],bfo); 
-
-	                		    Drawable drawableImage = new BitmapDrawable(getResources(),ThumbImage); 
-	                		    Log.i("drawableImage", separated[count_img_play]);
-	                		    image.setImageDrawable(drawableImage);
-	                		    
-	                		    
-	                         }
-	                         count_img_play++; //count_img_play = ++count_img_play % separated.length;
-	                        }
-	                        
-	                    });
-	                } catch (Exception e) {
-	                    // TODO: handle exception
-	                }
-	            }
-	        }
-	    });
-		//count_img_play = ++count_img_play % separated.length;
-		play_img_thread.start();
-	}*/
+	
 	
 	class MyThread implements Runnable {
-	    //private boolean keepRunning = false;
 	    private boolean isPaused = false;
 	    
 	    @Override
@@ -231,7 +194,7 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
 	     
 	        try {
 	            while (flag) {
-	            	Thread.sleep(1500);
+	            	Thread.sleep(1000);
 	            	
 	            	 if(!isPaused){	
                     mHandler.post(new Runnable() {
@@ -239,18 +202,13 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
                         @Override
                         public void run() {
                          if(count_img_play < separated.length){	
-                        	 Log.i("count_img_play", count_img_play+"");
+                        	 //Log.i("count_img_play", count_img_play+"");
                         	
                         	BitmapFactory.Options bfo = new BitmapFactory.Options();  
                 		    bfo.inSampleSize = 8;   
                 		    Bitmap ThumbImage = BitmapFactory.decodeFile(separated[count_img_play],bfo); 
 
                 		    Drawable drawableImage = new BitmapDrawable(getResources(),ThumbImage); 
-                		    Log.i("drawableImage", separated[count_img_play]);
-                		    //image_nxt.setImageDrawable(drawableImage);
-                		    Log.i("position", switcher.getDisplayedChild()+"");
-                		    //ImageViewAnimatedChange(context,image,drawableImage);
-                		    //switcher.showNext();
                 		    
                 		    if (switcher.getDisplayedChild() == 0) {
                 		    	image_nxt.setImageDrawable(drawableImage);
@@ -259,13 +217,9 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
                             	image.setImageDrawable(drawableImage);
                                 switcher.showPrevious();
                             }
-                		    
-                		    
-                		    Log.i("position11", switcher.getDisplayedChild()+"");
-                		    
-                		    
+                		    Log.i("switcher",switcher+"");
                          }
-                         count_img_play++; //count_img_play = ++count_img_play % separated.length;
+                         count_img_play++;
                         }
                         
                     });
@@ -307,26 +261,22 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
 	    }
 	}
 	
-	
-	/*public static void ImageViewAnimatedChange(Context c, final ImageView v, final Drawable new_image) {
-	    final Animation anim_out = AnimationUtils.loadAnimation(c, android.R.anim.fade_out); 
-	    final Animation anim_in  = AnimationUtils.loadAnimation(c, android.R.anim.fade_in); 
-	    anim_out.setAnimationListener(new AnimationListener()
+	 public static Bitmap captureViewToBitmap(View view)
+	  {
+	    Bitmap result = null;
+
+	    try
 	    {
-	        @Override public void onAnimationStart(Animation animation) {}
-	        @Override public void onAnimationRepeat(Animation animation) {}
-	        @Override public void onAnimationEnd(Animation animation)
-	        {
-	            v.setImageDrawable(new_image); 
-	            anim_in.setAnimationListener(new AnimationListener() {
-	                @Override public void onAnimationStart(Animation animation) {}
-	                @Override public void onAnimationRepeat(Animation animation) {}
-	                @Override public void onAnimationEnd(Animation animation) {}
-	            });
-	            v.startAnimation(anim_in);
-	        }
-	    });
-	    v.startAnimation(anim_out);
-	}*/
+	      result = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.RGB_565);
+	      view.draw(new Canvas(result));
+	    }
+	    catch(Exception e)
+	    {
+	      //Logger.e(e.toString());
+	    }
+	    
+	    return result;
+	  }
+	
 
 }

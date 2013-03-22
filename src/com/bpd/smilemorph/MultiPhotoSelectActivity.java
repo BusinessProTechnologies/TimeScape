@@ -8,10 +8,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-import com.bpd.database.DatabaseHandler;
-
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,11 +30,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.bpd.database.DatabaseHandler;
 
 public class MultiPhotoSelectActivity extends Activity implements
 		OnClickListener {
@@ -46,16 +46,15 @@ public class MultiPhotoSelectActivity extends Activity implements
 	private boolean[] thumbnailsselection;
 	private String[] arrPath;
 	private ImageAdapter imageAdapter;
-	Uri uriImagePath;
-	String mSelectedImagePath;
-	String morphName;
-	String inputPath = null;
-	File outputPath = null;
-	String imageName;
-	SQLiteDatabase db;
+	private Uri uriImagePath;
+	private String mSelectedImagePath;
+	private String morphName,inputPath = null,selectImages,updateNewImages,imageName;
+	private File outputPath = null;
+	private SQLiteDatabase db;
 	int update;
-	Bundle extras;
-	String selectImages,updateNewImages;
+	private Bundle extras;
+	private Context context = this;
+	Cursor imagecursor;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -88,13 +87,13 @@ public class MultiPhotoSelectActivity extends Activity implements
 		final String[] columns = { MediaStore.Images.Media.DATA,
 				MediaStore.Images.Media._ID };
 		final String orderBy = MediaStore.Images.Media._ID;
-		Cursor imagecursor = managedQuery(
+		imagecursor = managedQuery(
 				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
 				null, orderBy);
-		int image_column_index = imagecursor
+		/*int image_column_index = imagecursor
 				.getColumnIndex(MediaStore.Images.Media._ID);
 		this.count = imagecursor.getCount();
-		
+		Log.i("count",this.count+"");
 		this.arrPath = new String[this.count];
 		this.thumbnailsselection = new boolean[this.count];
 		if(!thumbnails.isEmpty()) {
@@ -111,9 +110,55 @@ public class MultiPhotoSelectActivity extends Activity implements
 					MediaStore.Images.Thumbnails.MICRO_KIND, null));
 			// Log.i("ThumB",thumbnails[i]+"");
 			arrPath[i] = imagecursor.getString(dataColumnIndex);
-		}
-		
+		}*/
+		new createCustomGallery(context, imagecursor).execute();
 		//imagecursor.close();
+	}
+	
+	private class createCustomGallery extends AsyncTask<String, File, String[]> {
+
+		ProgressDialog _dialog;
+		
+		public createCustomGallery(Context context, Cursor imagecursor) {
+			// TODO Auto-generated constructor stub
+		}
+		@Override
+		protected void onPreExecute(){
+			_dialog = ProgressDialog.show(context, "", "Loading...", true);
+		}
+		@Override
+		protected String[] doInBackground(String... arg0) {
+			// TODO Auto-generated method stub
+			int image_column_index = imagecursor
+			.getColumnIndex(MediaStore.Images.Media._ID);
+			//Log.i("image_column_index",image_column_index+"");
+			count = imagecursor.getCount();
+			Log.i("count",count+"");
+			
+			arrPath = new String[count];
+			thumbnailsselection = new boolean[count];
+			if(!thumbnails.isEmpty()) {
+				thumbnails.clear();
+			}
+			for (int i = 0; i < count; i++) {
+				imagecursor.moveToPosition(i);
+				int id = imagecursor.getInt(image_column_index);
+				int dataColumnIndex = imagecursor
+						.getColumnIndex(MediaStore.Images.Media.DATA);
+				 //Log.i("Image",dataColumnIndex+"");
+				thumbnails.add(MediaStore.Images.Thumbnails.getThumbnail(
+						getApplicationContext().getContentResolver(), id,
+						MediaStore.Images.Thumbnails.MICRO_KIND, null));
+				 //Log.i("ThumB",thumbnails[i]+"");
+				arrPath[i] = imagecursor.getString(dataColumnIndex);
+				//Log.i("ThumB", i+" "+arrPath[i]+"");
+			}
+			return arrPath;
+		}
+		protected void onPostExecute(String[] result) {
+			imageAdapter.notifyDataSetChanged();
+			_dialog.dismiss();
+		}
 	}
 
 	public class ImageAdapter extends BaseAdapter {
@@ -201,7 +246,7 @@ public class MultiPhotoSelectActivity extends Activity implements
 			int cnt = 0;
 			if(update == 1){
 				selectImages = extras.getString("imageString");
-				Log.i("selectImages",selectImages);
+				//Log.i("selectImages",selectImages);
 				updateNewImages = "";
 			}else{
 				selectImages = "";
@@ -226,9 +271,9 @@ public class MultiPhotoSelectActivity extends Activity implements
 						"Please select at least one image", Toast.LENGTH_LONG)
 						.show();
 			} else {
-				Toast.makeText(getApplicationContext(),
+				/*Toast.makeText(getApplicationContext(),
 						"You've selected Total " + cnt + " image(s).",
-						Toast.LENGTH_LONG).show();
+						Toast.LENGTH_LONG).show();*/
 				// Log.d("SelectedImages", selectImages);
 				if(update == 1){
 					inputPath = updateNewImages;
@@ -252,10 +297,18 @@ public class MultiPhotoSelectActivity extends Activity implements
 
 	private class copyImage extends AsyncTask<String, File, String> {
 
+		/*Context _context;*/
+		ProgressDialog _dialog;
+		
 		public copyImage(String inputPath, File outputPath) {
 			// TODO Auto-generated constructor stub
 		}
 
+		@Override
+		protected void onPreExecute(){
+			_dialog = ProgressDialog.show(context, "", "Loading...", true);
+		}
+		
 		@Override
 		protected String doInBackground(String... arg0) {   //coping from gallery to sdcard
 			InputStream in = null;
@@ -347,7 +400,9 @@ public class MultiPhotoSelectActivity extends Activity implements
 			intent.putExtra("imageString", result);
 			intent.putExtra("projectName", morphName); 
 			setResult(RESULT_OK, intent);
+			 _dialog.dismiss();
 			startActivity(intent);
+			finish();
 		}
 	}// end of copyImage( )
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

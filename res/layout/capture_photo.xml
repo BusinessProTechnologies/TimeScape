@@ -4,16 +4,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity" >
 
-    <SurfaceView 
+    <!-- <SurfaceView 
 	    android:id="@+id/surface_camera"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"/>
+	    android:layout_height="fill_parent"/> -->
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
 	<ImageView 
 	     android:id="@+id/surface_layout"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:background="@drawable/mouth"
 	    />
+	
+	    <!-- android:background="@drawable/mouth" -->
 	 <ImageView
             android:id="@+id/tgglCmra"
             android:layout_width="wrap_content"

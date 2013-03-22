@@ -1,22 +1,23 @@
 package com.bpd.smilemorph;
 
-import com.bpd.database.DatabaseHandler;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.bpd.database.DatabaseHandler;
 
 public class SetProjectNameActivity extends Activity implements OnClickListener {
 	ImageView nextBtn,cancelBtn;
@@ -25,6 +26,7 @@ public class SetProjectNameActivity extends Activity implements OnClickListener 
 	AlertDialog.Builder builder;
 	private DatabaseHandler myDbHelper;
 	SQLiteDatabase db;
+	final Context context = this;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,6 +37,62 @@ public class SetProjectNameActivity extends Activity implements OnClickListener 
 		cancelBtn = (ImageView) findViewById(R.id.cancelProjName);
 		cancelBtn.setOnClickListener(this);
 		
+		/****start in app pruchase*******/
+		/*myDbHelper = new DatabaseHandler(this);
+		myDbHelper.initializeDataBase();
+		db = myDbHelper.getWritableDatabase();
+		projName = projectName.getText().toString(); 
+		Cursor cursor = db.rawQuery("SELECT * FROM " + ProjectEntity.TABLE_NAME + ";", null);
+		
+		if(cursor.moveToFirst()){ 
+			
+			final Dialog dialog = new Dialog(context);
+			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+			dialog.setContentView(R.layout.dialog_inapp_purchase);
+			dialog.setTitle("Project limit reached!");
+			TextView myMsg = new TextView(this);
+			myMsg.setText("The free version of this app" +
+					"allows only 1 project,upgrade" +
+					"and create unlimited projects!");
+			//builder.setMessage("Project name can not be blank.");
+			 
+			ImageView inAppContinue = (ImageView) dialog
+					.findViewById(R.id.inAppContinue);
+			inAppContinue.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+
+					Intent intent = new Intent(SetProjectNameActivity.this,
+							MultiPhotoSelectActivity.class);
+					//intent.putExtra("morphName", projectName);
+					//intent.putExtra("imageString", imageString);
+					//intent.putExtra("update", 1);
+					//startActivity(intent);
+					dialog.dismiss();
+					startActivity(intent);
+					//startActivityForResult(intent, 2);
+				}
+			});
+			ImageView inAppCancel = (ImageView) dialog
+					.findViewById(R.id.inAppCancel);
+			inAppCancel.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					//Intent intent = new Intent(SetProjectNameActivity.this,CapturePhotoActivity.class);
+					//intent.putExtra("morphName", projectName);
+					//intent.putExtra("update", 1);
+					//startActivity(intent);
+					dialog.dismiss();
+					finish();
+					//startActivityForResult(intent, 1);
+				}
+			});
+			dialog.show();
+			
+		}
+		myDbHelper.close();
+		db.close();*/
+		/****End in app pruchase*******/
 	}
 	@Override
 	public void onClick(View v) {

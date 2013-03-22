@@ -141,6 +141,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 					intent.putExtra("imageString", imageString);
 					intent.putExtra("update", 1);
 					//startActivity(intent);
+					dialog.dismiss();
 					startActivityForResult(intent, 2);
 				}
 			});
@@ -152,7 +153,11 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 					Intent intent = new Intent(SelectedImageActivity.this,
 							CapturePhotoActivity.class);
 					intent.putExtra("morphName", projectName);
-					startActivity(intent);
+					intent.putExtra("update", 1);
+					//startActivity(intent);
+					dialog.dismiss();
+					//finish();
+					startActivityForResult(intent, 1);
 				}
 			});
 			ImageView dialogCancel = (ImageView) dialog
@@ -181,7 +186,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			Intent intent = new Intent(SelectedImageActivity.this,
 					PlayMorphActivity.class);
 			intent.putExtra("imageString", imageString);
-			//intent.putExtra("morphName", projectName);
+			intent.putExtra("projectName", projectName);
 			startActivity(intent);
 			
 		}else if (v.getId() == R.id.shareBtn) {
@@ -280,7 +285,6 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	
 	super.onActivityResult(requestCode, resultCode, data);
-		//if(data.getExtras().containsKey("widthInfo")){
 	if (requestCode == 1) {
 		if(resultCode == RESULT_OK){
 		noImages.setText(data.getStringExtra(String.valueOf("noimges"))+ " image(s)");
