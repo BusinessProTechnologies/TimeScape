@@ -49,13 +49,14 @@ public class SetProjectNameActivity extends Activity implements OnClickListener 
 			final Dialog dialog = new Dialog(context);
 			dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 			dialog.setContentView(R.layout.dialog_inapp_purchase);
-			dialog.setTitle("Project limit reached!");
-			TextView myMsg = new TextView(this);
-			myMsg.setText("The free version of this app" +
-					"allows only 1 project,upgrade" +
-					"and create unlimited projects!");
+			TextView dlogTl = (TextView) dialog.findViewById(R.id.dlogTl);
+			dlogTl.setText(R.string.limit_msg);//"Project limit reached!");
+			TextView myMsg = (TextView) dialog.findViewById(R.id.dlogMsg);
+			myMsg.setText(R.string.in_app_msg);//"The free version of this app" +
+					//"allows only 1 project,upgrade" +
+					//"and create unlimited projects!");
 			//builder.setMessage("Project name can not be blank.");
-			 
+			dialog.setCancelable(false);
 			ImageView inAppContinue = (ImageView) dialog
 					.findViewById(R.id.inAppContinue);
 			inAppContinue.setOnClickListener(new OnClickListener() {

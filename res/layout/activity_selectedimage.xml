@@ -65,7 +65,7 @@
         android:layout_toLeftOf="@id/linearLayoutAdder"
         android:layout_above="@id/relativeLayoutFooter"
         android:overScrollMode="always"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="42dp" />
     <LinearLayout
         android:id="@+id/relativeLayoutFooter"
         android:layout_width="fill_parent"

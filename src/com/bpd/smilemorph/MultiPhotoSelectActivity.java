@@ -195,6 +195,7 @@ public class MultiPhotoSelectActivity extends Activity implements
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
+			
 			holder.checkbox.setId(position);
 			holder.imageview.setId(position);
 			holder.checkbox.setOnClickListener(new OnClickListener() {
@@ -203,11 +204,13 @@ public class MultiPhotoSelectActivity extends Activity implements
 					// TODO Auto-generated method stub
 					CheckBox cb = (CheckBox) v;
 					int id = cb.getId();
+					
 					if (thumbnailsselection[id]) {
 						cb.setChecked(false);
 						thumbnailsselection[id] = false;
 					} else {
 						cb.setChecked(true);
+						Log.i("id",id+"");
 						thumbnailsselection[id] = true;
 					}
 				}

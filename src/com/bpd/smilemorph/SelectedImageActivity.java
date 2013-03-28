@@ -1,9 +1,15 @@
 package com.bpd.smilemorph;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,6 +19,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -21,19 +29,34 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.bpd.facebook.AsyncFacebookRunner;
+import com.bpd.facebook.BaseRequestListener;
+import com.bpd.facebook.DialogError;
+import com.bpd.facebook.Facebook;
+import com.bpd.facebook.Facebook.DialogListener;
+import com.bpd.facebook.FacebookError;
+import com.bpd.facebook.SessionStore;
+import com.bpd.facebook.Util;
 
 public class SelectedImageActivity extends Activity implements OnClickListener{
 
-	String imageString;
-	String[] separated;
-	Uri[] imageUri;
-	String projectName;
-	TextView projName,noImages;
-	ImageView imageAdder,homeView,playView,addView,shareView,settingsBtn;
+	private String imageString,projectName;
+	private String[] separated;
+	private Uri[] imageUri;
+	private TextView projName,noImages;
+	private ImageView imageAdder,homeView,playView,addView,shareView,settingsBtn;
 	final Context context = this;
+	private Facebook mFacebook;
+	private ProgressDialog mProgress;
+	private Handler mRunOnUi = new Handler();
+	private File outputPath = null;
+	//"AI39si7MujpYXykSy-6Z3a_O5LviS1Q7i-LdtOGiB_gO8Hf0q3P2Zy8Jy1bB-RgfLBHEeLK_E2EvZ5jbjz-N_nlwVCOmJGplmA"
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -68,6 +91,9 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	    myPager.setAdapter(adapter);
 	    myPager.setCurrentItem(0);
 	    myPager.setHorizontalFadingEdgeEnabled(true);
+	    
+	    mFacebook = new Facebook(Util.APP_ID);
+	    mProgress = new ProgressDialog(this);
 	}
 	
 	class MyPagerAdapter extends PagerAdapter {
@@ -77,11 +103,13 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 				return separated.length;
 			}
 		
-	    public Object instantiateItem(View collection, int position) {
+	    public Object instantiateItem(ViewGroup  collection, int position) {
 	        LayoutInflater inflater = (LayoutInflater) collection.getContext()
 	                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	        View view = null;
-	        view = inflater.inflate(R.layout.show_selectedimage, null);
+	        view =
+	            getLayoutInflater().inflate(R.layout.show_selectedimage, collection, false);
+	        //view = inflater.inflate(R.layout.show_selectedimage, null);
 	        
 	        ImageView imageViewPager = (ImageView) view.findViewById(R.id.imageViewPager);
 	        Log.i("imageUri", separated[position]);
@@ -106,6 +134,10 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	    @Override
 	    public void destroyItem(View arg0, int arg1, Object arg2) {
 	        ((ViewPager) arg0).removeView((View) arg2);
+	    }
+	    @Override
+	    public float getPageWidth(int position) {
+	      return(0.8f);
 	    }
 	    @Override
 	    public boolean isViewFromObject(View arg0, Object arg1) {
@@ -175,7 +207,8 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			Intent intent = new Intent(SelectedImageActivity.this,
 					SelectedImageSettingsActivity.class);
 			intent.putExtra("imageString", imageString);
-			intent.putExtra("projectName", projectName); 
+			intent.putExtra("projectName", projectName);
+			//finish();
 			startActivityForResult(intent, 1);
 		}else if (v.getId() == R.id.homeBtn) {
 			Intent intent = new Intent(SelectedImageActivity.this,
@@ -203,11 +236,14 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 				@Override
 				public void onClick(View v) {
 
-					/*Intent intent = new Intent(CreateMorphActivity.this,
-							MultiPhotoSelectActivity.class);
-					//Log.i("morphname", _morphName);
-					intent.putExtra("morphName", projectName);
-					startActivity(intent);*/
+					String review = "test";
+					SessionStore.restore(mFacebook, SelectedImageActivity.this);
+					if (mFacebook.isSessionValid()) {
+						postToFacebook(review);
+					} else {
+						Log.e("isSessionValid","false");
+						mFacebook.authorize(SelectedImageActivity.this, Util.PERMISSIONS, -1, new FbLoginDialogListener(review));
+					}
 				}
 			});
 			ImageView utubeBtn = (ImageView) dialog
@@ -248,10 +284,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			emailBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					/*Intent intent = new Intent(CreateMorphActivity.this,
-							PhotoIntentActivity.class);
-					intent.putExtra("morphName", projectName);
-					startActivity(intent);*/
+					attachPhoto(imageString);
 				}
 			});
 			ImageView msgBtn = (ImageView) dialog
@@ -281,6 +314,107 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		
 		
 	}
+	
+	private void postToFacebook(String post_message) {	
+		
+		mProgress.setMessage("Posting ...");
+		mProgress.show();
+		//byte[] data = null;
+		outputPath = new File(Environment.getExternalStorageDirectory()
+				+ "/SmileMorph/" + projectName);
+		//String dataPath = outputPath.toString() + "/video.mpeg";
+		AsyncFacebookRunner mAsyncFbRunner = new AsyncFacebookRunner(mFacebook);
+		
+		Bundle params = new Bundle();
+		//InputStream is = null;
+		//is = new FileInputStream(dataPath);
+	    //data = readBytes(is);
+		params.putString("message", post_message);
+		/*params.putString("name", "Emergency Medicine");
+		params.putString("caption", "Emergency Medicine");
+		params.putString("link", "http://www.google.com");
+		params.putString("description", "Emergency Medicine is an MCQs app.");
+		params.putString("picture", "http://twitpic.com/show/thumb/6hqd44");
+		*/
+		//params.putByteArray("video", data);
+		//mAsyncFbRunner.request("me/videos", params, "POST", new WallPostListener());
+		mAsyncFbRunner.request("me/feed", params, "POST", new WallPostListener());
+	}
+	
+	private class FbLoginDialogListener implements DialogListener {
+    	String _review = "";
+    	public FbLoginDialogListener(String review) {
+			_review = review;
+		}
+        public void onComplete(Bundle values) {
+            SessionStore.save(mFacebook, SelectedImageActivity.this);
+			Toast.makeText(SelectedImageActivity.this, "Facebook connection successful", Toast.LENGTH_SHORT).show();
+            //getFbName();
+			postToFacebook(_review);
+        }
+
+        public void onFacebookError(FacebookError error) {
+           Toast.makeText(SelectedImageActivity.this, "Facebook connection failed", Toast.LENGTH_SHORT).show();
+           
+        }
+        
+        public void onError(DialogError error) {
+        	Toast.makeText(SelectedImageActivity.this, "Facebook connection failed", Toast.LENGTH_SHORT).show(); 
+        	
+        }
+
+        public void onCancel() {
+        	Toast.makeText(SelectedImageActivity.this, "Facebook Login cancelled", Toast.LENGTH_SHORT).show();
+        }
+    }
+    
+	private  class WallPostListener extends BaseRequestListener {
+		public void onComplete(final String response) {
+        	
+			mRunOnUi.post(new Runnable() {
+        		@Override
+        		public void run() {
+        			mProgress.cancel();
+        			Toast.makeText(SelectedImageActivity.this, "Posted to Facebook", Toast.LENGTH_SHORT).show();
+        		}
+        	});
+        }
+    }
+	public byte[] readBytes(InputStream inputStream) throws IOException {
+	    // This dynamically extends to take the bytes you read.
+	    ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+
+	    // This is storage overwritten on each iteration with bytes.
+	    int bufferSize = 1024;
+	    byte[] buffer = new byte[bufferSize];
+
+	    // We need to know how may bytes were read to write them to the byteBuffer.
+	    int len = 0;
+	    while ((len = inputStream.read(buffer)) != -1) {
+	        byteBuffer.write(buffer, 0, len);
+	    }
+
+	    // And then we can return your byte array.
+	    return byteBuffer.toByteArray();
+	}
+	/*****************End of FB Integration******************************/
+	/*****************Start of Email****************************/
+	private void attachPhoto( String path ) {
+		  //Toast.makeText(getApplicationContext(), "path: "+ path , Toast.LENGTH_LONG).show();
+		  Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+		  //  emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, emailSignature);
+		     emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, "");
+		     emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "");
+		     emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, ""); 
+		     //emailIntent.setType("image/jpeg");
+		     emailIntent.setType("message/rfc822");
+		     File bitmapFile = new File(path);
+		     Uri myUri = Uri.fromFile(bitmapFile);
+		     emailIntent.putExtra(Intent.EXTRA_STREAM, myUri);
+		     //startActivity(Intent.createChooser(emailIntent, "Send your email in:"));
+		     startActivityForResult(Intent.createChooser(emailIntent, "Choose an Email client :"),3);
+		 }
+	/****************************************************************/
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	
@@ -317,7 +451,11 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			}if (resultCode == RESULT_CANCELED) {    
 		         //Write your code on no result return 
 		     }
-		}
+		}else if(requestCode == 3) {
+			   //Intent intent = new Intent(EmailPhoto.this, TabActivity.class);
+		       //startActivity(intent);
+		       finish();
+		  }
 	
 		
 	}

@@ -10,5 +10,9 @@
     <string name="cannot">Cannot</string>
     <string name="album_name">TimeScape</string>
     <string name="input_empty"> <font color="#C2302A">Project Name Can not Be Blank</font></string>
+    <string name="limit_msg"> <font color="#C2302A">Project limit reached!</font></string>
+	<string name="in_app_msg"> <font color="#C2302A">The free version of this app \n
+													allows only 1 project,upgrade \n
+													and create unlimited projects!</font></string>
 
 </resources>

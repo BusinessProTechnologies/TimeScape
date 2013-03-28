@@ -24,6 +24,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -108,12 +109,14 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 				return arrylst_seperator.size();
 			}
 		
-	    public Object instantiateItem(View collection, int position) {
+	    public Object instantiateItem(ViewGroup collection, int position) {
 	    	
 	        LayoutInflater inflater = (LayoutInflater) collection.getContext()
 	                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 	        View view = null;
-	        view = inflater.inflate(R.layout.deleteimg_viewpager, null);
+	        view =
+	            getLayoutInflater().inflate(R.layout.deleteimg_viewpager, collection, false);
+	        //view = inflater.inflate(R.layout.deleteimg_viewpager, null);
 	        
 	        ImageView imageViewPager = (ImageView) view.findViewById(R.id.imageViewPager);
 			delImg = (ImageView) view.findViewById(R.id.delImg);
@@ -193,6 +196,10 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 		@Override
 	    public void destroyItem(View arg0, int arg1, Object arg2) {
 	        ((ViewPager) arg0).removeView((View) arg2);
+	    }
+		@Override
+	    public float getPageWidth(int position) {
+	      return(0.8f);
 	    }
 	    @Override
 	    public boolean isViewFromObject(View arg0, Object arg1) {
