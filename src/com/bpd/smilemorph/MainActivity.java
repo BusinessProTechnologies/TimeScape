@@ -192,6 +192,7 @@ public class MainActivity extends Activity implements OnClickListener {
 	                // TODO Auto-generated catch block
 	                e.printStackTrace();
 	            }*/
+			//loginToTwitter();
 		}
 	}
 	
@@ -274,7 +275,10 @@ public class MainActivity extends Activity implements OnClickListener {
 	    t.start();
 	}
 	
-	private void loginToTwitter() {
+	 /**
+     * Function to login twitter
+     * */
+    private void loginToTwitter() {
         // Check if already logged in
         if (!isTwitterLoggedInAlready()) {
             ConfigurationBuilder builder = new ConfigurationBuilder();
@@ -306,7 +310,7 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         
         
-	}
+    }
 	private boolean isTwitterLoggedInAlready() {
         // return twitter login status from Shared Preferences
         return mSharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);

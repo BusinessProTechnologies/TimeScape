@@ -6,6 +6,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,6 +28,7 @@ public class CreateMorphActivity extends Activity implements OnClickListener {
 	final Context context = this;
 	AlertDialog.Builder builder;
 	byte[] byteArray = null;
+	private Boolean paymentDone;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,7 @@ public class CreateMorphActivity extends Activity implements OnClickListener {
 		 * addMorph = (TextView)findViewById(R.id.newMorph);
 		 * addMorph.setOnClickListener(this);
 		 */
-		
+		paymentDone = false;
 		imgView1 = (ImageView) findViewById(R.id.smileView1);
 		imgView1.setTag(1);
 		imgView1.setOnClickListener(this);
@@ -43,26 +47,75 @@ public class CreateMorphActivity extends Activity implements OnClickListener {
 		imgView2.setTag(2);
 		imgView2.setOnClickListener(this);
 		imgView3 = (ImageView) findViewById(R.id.smileView3);
-		imgView3.setTag(3);
-		imgView3.setOnClickListener(this);
 		imgView4 = (ImageView) findViewById(R.id.smileView4);
-		imgView4.setTag(4);
-		imgView4.setOnClickListener(this);
 		imgView5 = (ImageView) findViewById(R.id.smileView5);
-		imgView5.setTag(5);
-		imgView5.setOnClickListener(this);
 		imgView6 = (ImageView) findViewById(R.id.smileView6);
-		imgView6.setTag(6);
-		imgView6.setOnClickListener(this);
 		imgView7 = (ImageView) findViewById(R.id.smileView7);
-		imgView7.setTag(7);
-		imgView7.setOnClickListener(this);
 		imgView8 = (ImageView) findViewById(R.id.smileView8);
-		imgView8.setTag(8);
-		imgView8.setOnClickListener(this);
 		imgView9 = (ImageView) findViewById(R.id.smileView9);
-		imgView9.setTag(9);
-		imgView9.setOnClickListener(this);
+		
+		Resources r = getResources();
+		Drawable[] layers = new Drawable[2];
+		if(paymentDone == false){
+			layers[0] = r.getDrawable(R.drawable.lay3);
+			layers[1] = r.getDrawable(R.drawable.graybox);
+			LayerDrawable layerDrawable = new LayerDrawable(layers);
+			imgView3.setImageDrawable(layerDrawable);
+			imgView3.setClickable(false);
+			
+			layers[0] = r.getDrawable(R.drawable.lay4);
+			layers[1] = r.getDrawable(R.drawable.graybox);
+			LayerDrawable layerDrawable4 = new LayerDrawable(layers);
+			imgView4.setImageDrawable(layerDrawable4);
+			
+			layers[0] = r.getDrawable(R.drawable.lay5);
+			layers[1] = r.getDrawable(R.drawable.graybox);
+			LayerDrawable layerDrawable5 = new LayerDrawable(layers);
+			imgView5.setImageDrawable(layerDrawable5);
+			
+			layers[0] = r.getDrawable(R.drawable.lay6);
+			layers[1] = r.getDrawable(R.drawable.graybox);
+			LayerDrawable layerDrawable6 = new LayerDrawable(layers);
+			imgView6.setImageDrawable(layerDrawable6);
+			
+			layers[0] = r.getDrawable(R.drawable.lay7);
+			layers[1] = r.getDrawable(R.drawable.graybox);
+			LayerDrawable layerDrawable7 = new LayerDrawable(layers);
+			imgView7.setImageDrawable(layerDrawable7);
+			
+			layers[0] = r.getDrawable(R.drawable.lay8);
+			layers[1] = r.getDrawable(R.drawable.graybox);
+			LayerDrawable layerDrawable8 = new LayerDrawable(layers);
+			imgView8.setImageDrawable(layerDrawable8);
+			
+			layers[0] = r.getDrawable(R.drawable.lay9);
+			layers[1] = r.getDrawable(R.drawable.graybox);
+			LayerDrawable layerDrawable9 = new LayerDrawable(layers);
+			imgView9.setImageDrawable(layerDrawable9);
+		
+		}else{
+			
+			imgView3.setTag(3);
+			imgView3.setOnClickListener(this);
+			
+			imgView4.setTag(4);
+			imgView4.setOnClickListener(this);
+			
+			imgView5.setTag(5);
+			imgView5.setOnClickListener(this);
+			
+			imgView6.setTag(6);
+			imgView6.setOnClickListener(this);
+			
+			imgView7.setTag(7);
+			imgView7.setOnClickListener(this);
+			
+			imgView8.setTag(8);
+			imgView8.setOnClickListener(this);
+			
+			imgView9.setTag(9);
+			imgView9.setOnClickListener(this);
+		}
 		
 		_cancel = (ImageView) findViewById(R.id.cancel);
 		_cancel.setOnClickListener(this);

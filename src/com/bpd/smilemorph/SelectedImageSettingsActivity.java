@@ -130,9 +130,10 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 				public void onClick(final View v) {
 					AlertDialog.Builder adb = new AlertDialog.Builder(
 							SelectedImageSettingsActivity.this);
-					adb.setTitle("ListView OnClick");
+					adb.setTitle("Delete Image");
 					pos = Integer.parseInt(v.getTag().toString());
-					adb.setMessage("Selected Item is = " + pos+""+ arrylst_seperator.get(pos));
+					//adb.setMessage("Selected Item is = " + pos+""+ arrylst_seperator.get(pos));
+					adb.setMessage("Do you want to delete this image ?");
 					Log.i("getTag", v.getTag()+"");
 					adb.setPositiveButton("Ok", new Dialog.OnClickListener() {
 			            public void onClick(DialogInterface dialog, int which) {

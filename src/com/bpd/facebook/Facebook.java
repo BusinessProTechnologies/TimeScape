@@ -67,7 +67,7 @@ public class Facebook {
     protected static String GRAPH_BASE_URL =
         "https://graph.facebook.com/";
     protected static String RESTSERVER_URL =
-        "https://api.facebook.com/restserver.php";
+        "http://api-video.facebook.com/restserver.php";
 
     private String mAccessToken = null;
     private long mAccessExpires = 0;
@@ -551,11 +551,14 @@ public class Facebook {
     public String request(String graphPath, Bundle params, String httpMethod)
             throws FileNotFoundException, MalformedURLException, IOException {
         params.putString("format", "json");
+        //params.putByteArray("format", "json".getBytes());
         if (isSessionValid()) {
             params.putString(TOKEN, getAccessToken());
+            //params.putByteArray(TOKEN, getAccessToken().getBytes());
         }
         String url = (graphPath != null) ? GRAPH_BASE_URL + graphPath
                                          : RESTSERVER_URL;
+        Log.i("request-url",url);
         return Util.openUrl(url, httpMethod, params);
     }
 

@@ -215,9 +215,8 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 				public void onClick(View v) {
 					AlertDialog.Builder adb = new AlertDialog.Builder(
 					ExistingMorphActivity.this);
-					adb.setTitle("ListView OnClick");
-					adb.setMessage("Selected Item is = "
-					+ id);
+					adb.setTitle("Delete Project");
+					adb.setMessage("Do you want to delete ?");
 					//adb.setPositiveButton("Ok", null);
 					adb.setPositiveButton("Ok", new Dialog.OnClickListener() {
 			            public void onClick(DialogInterface dialog, int which) {
@@ -281,7 +280,15 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 	@Override
 	public void onClick(View v) {
 		if(v.getId() == R.id.cancelExProj) {
-			finish();
+			if(showDelete == true){
+				showDelete = false;
+				doneBtn.setVisibility(View.GONE);
+				editBtn.setVisibility(View.VISIBLE);
+				adpt = new ProjectAdapter(this,projectList);
+				listView.setAdapter(adpt);
+			}else{
+				finish();
+			}
 		}else if(v.getId() == R.id.strtProj) {
 			Intent intent = new Intent(ExistingMorphActivity.this, SetProjectNameActivity.class);
 			finish();

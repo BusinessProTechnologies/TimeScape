@@ -17,6 +17,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -76,36 +77,42 @@ public class createVideoActivity extends Activity {
 		}
 		projPath = new File(Environment.getExternalStorageDirectory()
 				+ "/SmileMorph/" + projectName);
-        recorder = new FFmpegFrameRecorder(projPath +"/video.mpeg",200,150);
+
+		int ht;
+		int wt;
+		DisplayMetrics displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		ht = displaymetrics.heightPixels;
+		wt = displaymetrics.widthPixels;
+        recorder = new FFmpegFrameRecorder(projPath +"/video.mp4",wt,ht);
         flag = false;
         count_img_play=0;
         play_img_thread = new MyThread();
 		newThread = new Thread(play_img_thread);
 		newThread.start();
         play_img_thread.start();
+        mHandler =new Handler();
+        
 		
-        //startAnimation();
-           // try {
+            /*try {
                //recorder.setCodecID(AV_CODEc);
-               /*recorder.setAudioCodec(AV_CODEC_ID_MPEG4);
+               recorder.setAudioCodec(AV_CODEC_ID_MPEG4);
                recorder.setFormat("mp4");
-               recorder.setFrameRate(25);
+               recorder.setFrameRate(1);
                recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
-               recorder.start();*/
+               recorder.start();
                
-               /*for (int i=0;i < separated.length;i++)
+               for (int i=0;i < separated.length;i++)
                {
+            	   
+            	  overridePendingTransition(R.anim.fadein,R.anim.fadeout);
                   recorder.record(img[i]);
-               }*/
-               //newThread.start();
-              // play_img_thread.start();
-               //startAnimation();
-              // play_img_thread.start();
-               //recorder.stop();
-            //}
-            //catch (Exception e){
-             //  e.printStackTrace();
-            //}
+               }
+               
+               recorder.stop();
+            }catch (Exception e){
+               e.printStackTrace();
+            }*/
     }
    
     class MyThread implements Runnable {
@@ -117,75 +124,77 @@ public class createVideoActivity extends Activity {
 	    	//flag = true;
 	    	Log.i("switcher",switcher+" "+flag+" "+isPaused+" "+" "+count_img_play+" "+separated.length);
 	        try {
-	        	recorder.setAudioCodec(AV_CODEC_ID_MPEG4);
-                recorder.setFormat("mp4");
-                recorder.setFrameRate(25);
+	        	recorder.setFormat("mp4");
+                recorder.setFrameRate(1);
                 recorder.setPixelFormat(AV_PIX_FMT_YUV420P);
                 recorder.start();
 	            while (flag) {
-	            	 Thread.sleep(1000);
-	            	
-	            		 //try {
-	            			 
-                   // mHandler.post(new Runnable() {
-
-                        /*@Override
-                        public void run() {*/
-	                         for (int count_img_play=0;count_img_play < separated.length;count_img_play++){
-	                        	 
-                        // if(count_img_play < separated.length){	
-                        	 //Log.i("count_img_play", count_img_play+"");
-	                        	 overridePendingTransition(R.anim.fadein,R.anim.fadeout);	 
-	                        	
-                        	 Log.i("switcher 2",switcher+" "+flag+" "+isPaused+" "+" "+count_img_play+" "+separated.length);
-                        	/*BitmapFactory.Options bfo = new BitmapFactory.Options();  
-                		    bfo.inSampleSize = 8;   
-                		    Bitmap ThumbImage = BitmapFactory.decodeFile(separated[count_img_play],bfo); 
-                		    Log.i("switcher 3",switcher+" "+flag+" "+isPaused+" "+" "+count_img_play+" "+separated.length);
-                		    Drawable drawableImage = new BitmapDrawable(getResources(),ThumbImage); 
-                		    Log.i("switcher 4",switcher+" "+flag+" "+isPaused+" "+" "+count_img_play+" "+separated.length);
-                		    final Drawable imgg = drawableImage;
-                		    switcher.post(new Runnable() {
-								
-								@Override
-								public void run() {
-									// TODO Auto-generated method stub
-									if (switcher.getDisplayedChild() == 0) {
-		                		    	image_nxt.setImageDrawable(imgg);
-		                                switcher.showNext();
-		                            } else {
-		                            	image.setImageDrawable(imgg);
-		                                switcher.showPrevious();
-		                            }
-								}
-							});
-                		    
-                		    Log.i("switcher",switcher+"");
-                		    //switcher.getCurrentView()
-                		    bMap = captureViewToBitmap(switcher);
-                   		    Log.i("bMap",bMap+"");
-                   		    img[count_img_play] = bitmapToIplImage(bMap);*/
-                   		    Log.i("img[i]",count_img_play+" "+img[count_img_play]+"");
-                       		//try {
-                       			
-								//recorder.record(img[count_img_play]);
+	            	Thread.sleep(1000);
+            		 //try {
+	            	 recorder.setAudioCodec(AV_CODEC_ID_MPEG4);
+	                 
+	                 mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                         for (int count_img_play=0;count_img_play < separated.length;count_img_play++){
+                        	 
+                    // if(count_img_play < separated.length){	
+                    	 //Log.i("count_img_play", count_img_play+"");
+                       //overridePendingTransition(R.anim.fadein,R.anim.fadeout);	 
+                        	
+                    	 Log.i("switcher 2",switcher+" "+flag+" "+isPaused+" "+" "+count_img_play+" "+separated.length);
+                    	BitmapFactory.Options bfo = new BitmapFactory.Options();  
+            		    bfo.inSampleSize = 8;   
+            		    Bitmap ThumbImage = BitmapFactory.decodeFile(separated[count_img_play],bfo); 
+            		    Log.i("switcher 3",switcher+" "+flag+" "+isPaused+" "+" "+count_img_play+" "+separated.length);
+            		    Drawable drawableImage = new BitmapDrawable(getResources(),ThumbImage); 
+            		    Log.i("switcher 4",switcher+" "+flag+" "+isPaused+" "+" "+count_img_play+" "+separated.length);
+            		    final Drawable imgg = drawableImage;
+            		    switcher.post(new Runnable() {
+							
+							@Override
+							public void run() {
+								// TODO Auto-generated method stub
+								if (switcher.getDisplayedChild() == 0) {
+	                		    	image_nxt.setImageDrawable(imgg);
+	                                switcher.showNext();
+	                            } else {
+	                            	image.setImageDrawable(imgg);
+	                                switcher.showPrevious();
+	                            }
+							}
+						});
+            		    
+            		    Log.i("switcher",switcher+"");
+            		    //switcher.getCurrentView()
+            		    bMap = captureViewToBitmap(switcher);
+               		    Log.i("bMap",bMap+"");
+               		    img[count_img_play] = bitmapToIplImage(bMap);
+               		    Log.i("img[i]",count_img_play+" "+img[count_img_play]+"");
+						try {
 								recorder.record(img[count_img_play]);
-                         }
-	                         recorder.stop(); 
-                         //count_img_play++;  
-                        //}
-                        
-                    //});
-	            		 /*} catch (com.googlecode.javacv.FrameRecorder.Exception e) {
-								//e.printStackTrace();
-								Log.i("IPLIMAGE","ERROR");
-						}*/
-	            	
-	            	
-	            }
+							} catch (com.googlecode.javacv.FrameRecorder.Exception e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+                     }
+                         try {
+							recorder.stop();
+						} catch (com.googlecode.javacv.FrameRecorder.Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						} 
+                     //count_img_play++;  
+                    }
+                    
+                });
+            		 /*} catch (com.googlecode.javacv.FrameRecorder.Exception e) {
+							//e.printStackTrace();
+							Log.i("IPLIMAGE","ERROR");
+					}*/
+	            }//flag
 	        } catch (Exception ex) {
 	            Log.getStackTraceString(ex);
-	        	Log.i("IPLIMAGE","ERROR");
 	        }
 	    }
 	    

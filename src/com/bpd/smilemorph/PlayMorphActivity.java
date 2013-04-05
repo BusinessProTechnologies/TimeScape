@@ -158,17 +158,17 @@ public class PlayMorphActivity extends Activity implements OnClickListener{
 					startActivity(intent);*/
 				}
 			});
-			ImageView msgBtn = (ImageView) dialog
+			/*ImageView msgBtn = (ImageView) dialog
 			.findViewById(R.id.msgBtn);
 			msgBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					/*Intent intent = new Intent(CreateMorphActivity.this,
+					Intent intent = new Intent(CreateMorphActivity.this,
 							PhotoIntentActivity.class);
 					intent.putExtra("morphName", projectName);
-					startActivity(intent);*/
+					startActivity(intent);
 				}
-			});
+			});*/
 			ImageView dialogCancel = (ImageView) dialog
 					.findViewById(R.id.dialogCancel);
 			// if button is clicked, close the custom dialog

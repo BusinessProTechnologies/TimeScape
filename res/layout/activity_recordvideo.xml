@@ -9,8 +9,8 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
-            android:inAnimation="@anim/fade_in"
-            android:outAnimation="@anim/fade_out" >
+            android:inAnimation="@anim/fadein"
+            android:outAnimation="@anim/fadeout" >
 
             <ImageView
                 android:id="@+id/image"

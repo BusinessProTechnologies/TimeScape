@@ -3,6 +3,8 @@ package com.bpd.smilemorph;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -56,6 +58,8 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	private ProgressDialog mProgress;
 	private Handler mRunOnUi = new Handler();
 	private File outputPath = null;
+	private ViewPager myPager;
+	//final Dialog dialog = new Dialog(context);
 	//"AI39si7MujpYXykSy-6Z3a_O5LviS1Q7i-LdtOGiB_gO8Hf0q3P2Zy8Jy1bB-RgfLBHEeLK_E2EvZ5jbjz-N_nlwVCOmJGplmA"
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +91,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		separated = imageString.replace("|", ",").split(",");
 		noImages.setText(String.valueOf(separated.length) + " image(s)");
 		MyPagerAdapter adapter = new MyPagerAdapter();
-	    ViewPager myPager = (ViewPager) findViewById(R.id.imagepanelpager);
+	    myPager = (ViewPager) findViewById(R.id.imagepanelpager);
 	    myPager.setAdapter(adapter);
 	    myPager.setCurrentItem(0);
 	    myPager.setHorizontalFadingEdgeEnabled(true);
@@ -235,7 +239,9 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			fbBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-
+					outputPath = new File(Environment.getExternalStorageDirectory()
+							+ "/SmileMorph/" + projectName);
+					String dataPath = outputPath.toString() + "/video.mpeg";
 					String review = "test";
 					SessionStore.restore(mFacebook, SelectedImageActivity.this);
 					if (mFacebook.isSessionValid()) {
@@ -284,20 +290,24 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			emailBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					attachPhoto(imageString);
+					outputPath = new File(Environment.getExternalStorageDirectory()
+							+ "/SmileMorph/" + projectName);
+					String dataPath = outputPath.toString() + "/abc.mp4";
+					attachPhoto(dataPath);
 				}
 			});
-			ImageView msgBtn = (ImageView) dialog
+			
+			/*ImageView msgBtn = (ImageView) dialog
 			.findViewById(R.id.msgBtn);
 			msgBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					/*Intent intent = new Intent(CreateMorphActivity.this,
+					Intent intent = new Intent(CreateMorphActivity.this,
 							PhotoIntentActivity.class);
 					intent.putExtra("morphName", projectName);
-					startActivity(intent);*/
+					startActivity(intent);
 				}
-			});
+			});*/
 			ImageView dialogCancel = (ImageView) dialog
 					.findViewById(R.id.dialogCancel);
 			// if button is clicked, close the custom dialog
@@ -319,26 +329,39 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		
 		mProgress.setMessage("Posting ...");
 		mProgress.show();
-		//byte[] data = null;
+		byte[] data = null;
 		outputPath = new File(Environment.getExternalStorageDirectory()
 				+ "/SmileMorph/" + projectName);
-		//String dataPath = outputPath.toString() + "/video.mpeg";
+		String dataPath = outputPath.toString() + "/abc.mp4";
 		AsyncFacebookRunner mAsyncFbRunner = new AsyncFacebookRunner(mFacebook);
-		
+		String dataMsg = "It is the short movie created";
 		Bundle params = new Bundle();
-		//InputStream is = null;
-		//is = new FileInputStream(dataPath);
-	    //data = readBytes(is);
-		params.putString("message", post_message);
+		InputStream is = null;
+		try {
+			is = new FileInputStream(dataPath);
+			data = readBytes(is);
+		//params.putString("message", post_message);
 		/*params.putString("name", "Emergency Medicine");
 		params.putString("caption", "Emergency Medicine");
 		params.putString("link", "http://www.google.com");
 		params.putString("description", "Emergency Medicine is an MCQs app.");
 		params.putString("picture", "http://twitpic.com/show/thumb/6hqd44");
 		*/
+			params.putString("message", dataMsg);
+			params.putString("filename", "abc.mp4");
+            //params.putString("title", "title");
+            //params.putString("contentType", "video/mp4");
+            params.putByteArray("video", data);	
 		//params.putByteArray("video", data);
-		//mAsyncFbRunner.request("me/videos", params, "POST", new WallPostListener());
-		mAsyncFbRunner.request("me/feed", params, "POST", new WallPostListener());
+		mAsyncFbRunner.request("me/videos", params, "POST", new WallPostListener());
+		//mAsyncFbRunner.request("me/feed", params, "POST", new WallPostListener());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private class FbLoginDialogListener implements DialogListener {
@@ -354,12 +377,12 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
         }
 
         public void onFacebookError(FacebookError error) {
-           Toast.makeText(SelectedImageActivity.this, "Facebook connection failed", Toast.LENGTH_SHORT).show();
+           Toast.makeText(SelectedImageActivity.this, "Facebook connection failed 1", Toast.LENGTH_SHORT).show();
            
         }
         
         public void onError(DialogError error) {
-        	Toast.makeText(SelectedImageActivity.this, "Facebook connection failed", Toast.LENGTH_SHORT).show(); 
+        	Toast.makeText(SelectedImageActivity.this, "Facebook connection failed 2", Toast.LENGTH_SHORT).show(); 
         	
         }
 
@@ -398,6 +421,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	    return byteBuffer.toByteArray();
 	}
 	/*****************End of FB Integration******************************/
+	
 	/*****************Start of Email****************************/
 	private void attachPhoto( String path ) {
 		  //Toast.makeText(getApplicationContext(), "path: "+ path , Toast.LENGTH_LONG).show();
@@ -414,12 +438,13 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		     //startActivity(Intent.createChooser(emailIntent, "Send your email in:"));
 		     startActivityForResult(Intent.createChooser(emailIntent, "Choose an Email client :"),3);
 		 }
-	/****************************************************************/
+	/**********************End Share To Email******************************************/
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 	
 	super.onActivityResult(requestCode, resultCode, data);
 	if (requestCode == 1) {
+		Log.i("resultCode",resultCode+"");
 		if(resultCode == RESULT_OK){
 		noImages.setText(data.getStringExtra(String.valueOf("noimges"))+ " image(s)");
 		projectName = data.getStringExtra("projectName");
@@ -430,12 +455,13 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		MyPagerAdapter adapter = new MyPagerAdapter();
 	    ViewPager myPager = (ViewPager) findViewById(R.id.imagepanelpager);
 	    myPager.setAdapter(adapter);
-	    myPager.setCurrentItem(0);
+	    Log.i("separated.length - 1",separated.length - 1+"");
+	    myPager.setCurrentItem(separated.length - 1);
 	    myPager.setHorizontalFadingEdgeEnabled(true);
 		}if (resultCode == RESULT_CANCELED) {    
 	         //Write your code on no result return 
 	     }
-	}else if (requestCode == 2) {
+	}else if (requestCode == 2) {   //
 		if(resultCode == RESULT_OK){
 			noImages.setText(data.getStringExtra(String.valueOf("noimges"))+ " image(s)");
 			projectName = data.getStringExtra("projectName");
@@ -446,15 +472,17 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			MyPagerAdapter adapter = new MyPagerAdapter();
 		    ViewPager myPager = (ViewPager) findViewById(R.id.imagepanelpager);
 		    myPager.setAdapter(adapter);
-		    myPager.setCurrentItem(0);
+		    Log.i("separated.length - 1",separated.length - 1+"");
+		    myPager.setCurrentItem(separated.length - 1);
 		    myPager.setHorizontalFadingEdgeEnabled(true);
 			}if (resultCode == RESULT_CANCELED) {    
 		         //Write your code on no result return 
 		     }
-		}else if(requestCode == 3) {
+		}else if(requestCode == 3) {   //Email Intent return
 			   //Intent intent = new Intent(EmailPhoto.this, TabActivity.class);
 		       //startActivity(intent);
-		       finish();
+		       //finish();
+				//dialog.dismiss();
 		  }
 	
 		

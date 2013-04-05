@@ -195,7 +195,6 @@ public class MultiPhotoSelectActivity extends Activity implements
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			
 			holder.checkbox.setId(position);
 			holder.imageview.setId(position);
 			holder.checkbox.setOnClickListener(new OnClickListener() {
@@ -209,9 +208,39 @@ public class MultiPhotoSelectActivity extends Activity implements
 						cb.setChecked(false);
 						thumbnailsselection[id] = false;
 					} else {
+						if(update == 1){
+							selectImages = extras.getString("imageString");
+							String[] separated = selectImages.replace("|", ",").split(",");
+							String selectedImg = arrPath[id].substring(
+									arrPath[id].lastIndexOf("/") + 1,
+									arrPath[id].length());
+							
+							for (int i = 0; i < separated.length; i++) {
+								imageName = separated[i].substring(
+										separated[i].lastIndexOf("/") + 1,
+										separated[i].length());
+								Log.i("imageName", imageName);
+								//Log.i("id",id+"");
+								Log.i("arrPath[id]",selectedImg);
+								if(imageName.equals(selectedImg)){
+									Toast.makeText(getApplicationContext(),
+											"This image is already selected", Toast.LENGTH_LONG)
+											.show();
+									cb.setChecked(false);
+									thumbnailsselection[id] = false;
+									//imageAdapter.notifyDataSetChanged();
+									
+								}else{
+									cb.setChecked(true);
+									thumbnailsselection[id] = true;
+								}
+							}
+						}else{
 						cb.setChecked(true);
 						Log.i("id",id+"");
+						Log.i("arrPath[id]",arrPath[id]);
 						thumbnailsselection[id] = true;
+						}
 					}
 				}
 			});
