@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="true" >
+
+    <RelativeLayout
+        android:id="@+id/dialogRL"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="2dp"
+        android:padding="2dp" >
+
+        <ImageView
+            android:id="@+id/dialogBg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/box1" />
+    </RelativeLayout>
+
+    <TableLayout
+        android:id="@+id/tableLayout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true" >
+
+        <TableRow
+            android:id="@+id/tableRowHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:gravity="center"
+                android:text="Record and Share Video"
+                android:textColor="@color/black"
+                android:textStyle="bold" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
+
+            <ImageView
+                android:id="@+id/fbBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/fbselector"
+                android:gravity="center" />
+
+            <ImageView
+                android:id="@+id/utubeBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/youtubeselector"
+                android:gravity="center" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp" >
+
+            <!--
+                 <ImageView
+                android:id="@+id/twitterBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/twitterselector"
+                android:gravity="center" />
+            -->
+
+            <ImageView
+                android:id="@+id/saveVdoBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/savevdoselector"
+                android:gravity="center" />
+
+            <ImageView
+                android:id="@+id/emailBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:background="@drawable/emailselector"
+                android:gravity="center" />
+        </TableRow>
+
+        <!-- <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp" >
+
+            <ImageView
+                android:id="@+id/msgBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_span="2"
+                android:layout_marginLeft="15dp"
+                android:background="@drawable/msgselector"
+                android:gravity="center" />
+        </TableRow> -->
+    </TableLayout>
+
+    <ImageView
+        android:id="@+id/dialogCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/close_button" />
+
+</RelativeLayout>

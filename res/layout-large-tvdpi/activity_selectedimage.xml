@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/inner_bg1" >
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutHeader"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/heading2" >
+
+        <TextView
+            android:id="@+id/noImgs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:paddingLeft="12dp"
+            android:text="5" />
+
+        <TextView
+            android:id="@+id/projectName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:text="ProjectName" />
+        <ImageView 
+            android:id="@+id/settingsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/setting"
+            android:paddingRight="12dp"
+            />
+        
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutAdder"
+        android:layout_below="@id/relativeLayoutHeader"
+        android:layout_above="@id/relativeLayoutFooter"
+        android:layout_width="150dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentRight="true" >
+
+        <ImageView
+            android:id="@+id/imageAdder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/addmoreselector" />
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/imagepanelpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/relativeLayoutHeader"
+        android:layout_toLeftOf="@id/linearLayoutAdder"
+        android:layout_above="@id/relativeLayoutFooter"
+        android:overScrollMode="always"
+        android:layout_marginBottom="42dp" />
+    <LinearLayout
+        android:id="@+id/relativeLayoutFooter"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/lower_tab"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal">
+        <ImageView 
+            android:id="@+id/homeBtn"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_vertical"
+        	android:layout_marginRight="10dp"
+        	android:background="@drawable/homeselector" />
+        <ImageView 
+            android:id="@+id/playBtn"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_vertical"
+        	android:layout_marginRight="10dp"
+        	android:background="@drawable/playselector" />
+        <ImageView 
+            android:id="@+id/addBtn"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_vertical"
+        	android:layout_marginRight="10dp"
+        	android:background="@drawable/addselector" />
+       <ImageView 
+            android:id="@+id/shareBtn"
+            android:layout_width="wrap_content"
+        	android:layout_height="wrap_content"
+        	android:layout_gravity="center_vertical"
+        	android:background="@drawable/shareselector" />
+    </LinearLayout>
+
+</RelativeLayout>

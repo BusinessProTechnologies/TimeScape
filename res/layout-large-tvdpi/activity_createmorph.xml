@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/inner_bg1"
+    android:orientation="vertical" >
+	<HorizontalScrollView 
+    xmlns:tools="http://schemas.android.com/tool"
+        android:id="@+id/horizontalScrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true" >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal">
+    <TableLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tableLayoutLay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TableRow
+            android:id="@+id/tableRowFst"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp" >
+
+            <ImageView
+                android:id="@+id/smileView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay1"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/smileView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay2"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/smileView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay3"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/smileView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay4"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/smileView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay5" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRowSnd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dip" >
+
+            <ImageView
+                android:id="@+id/smileView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay6"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/smileView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay7"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/smileView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay8"
+                android:layout_marginRight="8dp" />
+
+            <ImageView
+                android:id="@+id/smileView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/lay9"
+                android:layout_marginRight="8dp" />
+
+        </TableRow>
+    </TableLayout>
+    </LinearLayout>
+	</HorizontalScrollView>
+    <RelativeLayout
+        android:id="@+id/relative2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/lower_tab" >
+
+        <ImageView
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@drawable/cancelselector" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="TAP TO SELECT A LAYOUT"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</RelativeLayout>

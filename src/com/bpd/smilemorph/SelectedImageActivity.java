@@ -178,6 +178,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 					intent.putExtra("update", 1);
 					//startActivity(intent);
 					dialog.dismiss();
+					finish();
 					startActivityForResult(intent, 2);
 				}
 			});
@@ -192,7 +193,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 					intent.putExtra("update", 1);
 					//startActivity(intent);
 					dialog.dismiss();
-					//finish();
+					finish();
 					startActivityForResult(intent, 1);
 				}
 			});
@@ -212,7 +213,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 					SelectedImageSettingsActivity.class);
 			intent.putExtra("imageString", imageString);
 			intent.putExtra("projectName", projectName);
-			//finish();
+			finish();
 			startActivityForResult(intent, 1);
 		}else if (v.getId() == R.id.homeBtn) {
 			Intent intent = new Intent(SelectedImageActivity.this,
@@ -224,6 +225,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 					PlayMorphActivity.class);
 			intent.putExtra("imageString", imageString);
 			intent.putExtra("projectName", projectName);
+			finish();
 			startActivity(intent);
 			
 		}else if (v.getId() == R.id.shareBtn) {

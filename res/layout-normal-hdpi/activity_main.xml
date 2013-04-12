@@ -1,0 +1,71 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="@drawable/inner_bg">
+
+    <!--
+         <RelativeLayout
+        android:id="@+id/page_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="150dp"
+        android:gravity="center_horizontal" >
+    -->
+
+    <LinearLayout
+        android:id="@+id/layProj"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:layout_marginTop="78dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/imgView_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="15dp"
+            android:gravity="center_horizontal"
+           	android:background="@drawable/newprojectselector" />
+
+        <ImageView
+            android:id="@+id/imgView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center_horizontal"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/exprojectselector" />
+       
+    </LinearLayout>
+	<RelativeLayout 
+	    android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_horizontal"
+        android:layout_below="@id/layProj"
+        android:layout_marginTop="1dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+	    <ImageView
+            android:id="@+id/imgView_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:background="@drawable/fbfrontselector" />
+	    <ImageView
+            android:id="@+id/imgView_4"
+            android:layout_below="@id/imgView_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:background="@drawable/twitterfrontselector" />
+	</RelativeLayout>
+</RelativeLayout>

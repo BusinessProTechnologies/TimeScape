@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <!-- <SurfaceView 
+	    android:id="@+id/surface_camera"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"/> -->
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+	<ImageView 
+	     android:id="@+id/surface_layout"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    />
+	
+	    <!-- android:background="@drawable/mouth" -->
+	 <ImageView
+            android:id="@+id/tgglCmra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/camerarotateselector" />
+        <ImageView
+            android:id="@+id/closeCmra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/closecameraselector" />
+
+        <ImageView
+            android:id="@+id/cpturCmra"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/imagecpturselector" />
+</RelativeLayout>
