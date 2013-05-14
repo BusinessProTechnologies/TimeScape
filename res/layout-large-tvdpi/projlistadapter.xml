@@ -12,6 +12,7 @@
         android:padding="2dip"
     	android:background="#ffffff"
     	android:layout_centerVertical="true"
+    	android:scaleType="fitCenter"
         android:src="@drawable/adamlimmer" />
 
     <TextView

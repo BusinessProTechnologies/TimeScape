@@ -26,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bpd.database.DatabaseHandler;
+import com.bpd.smilemorph.R;
 
 public class ImagePostingActivity extends Activity implements OnClickListener {
 	

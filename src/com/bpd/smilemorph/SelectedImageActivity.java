@@ -12,6 +12,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -24,8 +26,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Parcelable;
+import android.provider.MediaStore;
+import android.provider.MediaStore.Video;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -45,6 +50,8 @@ import com.bpd.facebook.Facebook.DialogListener;
 import com.bpd.facebook.FacebookError;
 import com.bpd.facebook.SessionStore;
 import com.bpd.facebook.Util;
+import com.bpd.smilemorph.R;
+import com.bpd.utils.Utils;
 
 public class SelectedImageActivity extends Activity implements OnClickListener{
 
@@ -59,12 +66,21 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	private Handler mRunOnUi = new Handler();
 	private File outputPath = null;
 	private ViewPager myPager;
+	int imgHeight,imgWidth,pagerWt,pagerHt;
+	DisplayMetrics displaymetrics;
 	//final Dialog dialog = new Dialog(context);
 	//"AI39si7MujpYXykSy-6Z3a_O5LviS1Q7i-LdtOGiB_gO8Hf0q3P2Zy8Jy1bB-RgfLBHEeLK_E2EvZ5jbjz-N_nlwVCOmJGplmA"
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_selectedimage);
+		
+		
+		displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		imgHeight = displaymetrics.heightPixels;
+		imgWidth = displaymetrics.widthPixels;
+		Log.i("width+height",imgWidth+"-"+imgHeight);
 		
 		Bundle extras = getIntent().getExtras();
 		imageString = extras.getString("imageString");
@@ -92,6 +108,9 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		noImages.setText(String.valueOf(separated.length) + " image(s)");
 		MyPagerAdapter adapter = new MyPagerAdapter();
 	    myPager = (ViewPager) findViewById(R.id.imagepanelpager);
+	    pagerWt = myPager.getMeasuredWidth();
+	    pagerHt = myPager.getMeasuredHeight();
+	    Log.i("pager width height",pagerWt+""+pagerHt);
 	    myPager.setAdapter(adapter);
 	    myPager.setCurrentItem(0);
 	    myPager.setHorizontalFadingEdgeEnabled(true);
@@ -119,7 +138,8 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	        Log.i("imageUri", separated[position]);
 	        
 	        BitmapFactory.Options bfo = new BitmapFactory.Options();  
-		    bfo.inSampleSize = 8;   
+		    bfo.inSampleSize = Utils.calculateInSize(bfo, imgWidth, imgHeight);//8; imgWidth, imgHeight pagerWt, pagerHt
+		    Log.i("SampleSize",bfo.inSampleSize+"");
 		    Bitmap ThumbImage = BitmapFactory.decodeFile(separated[position],bfo); 
 		    //ThumbImage = Bitmap.createScaledBitmap(ThumbImage, 200, 200, false);
 
@@ -154,6 +174,8 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		
 	}
 
+	
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub
@@ -259,10 +281,10 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 			utubeBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					/*Intent intent = new Intent(CreateMorphActivity.this,
-							PhotoIntentActivity.class);
-					intent.putExtra("morphName", projectName);
-					startActivity(intent);*/
+					outputPath = new File(Environment.getExternalStorageDirectory()
+							+ "/SmileMorph/" + projectName);
+					String dataPath = outputPath.toString() + "/abc.mp4";
+					attachVideoFrmUtube(dataPath);
 				}
 			});
 			/*ImageView twitterBtn = (ImageView) dialog
@@ -295,7 +317,7 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 					outputPath = new File(Environment.getExternalStorageDirectory()
 							+ "/SmileMorph/" + projectName);
 					String dataPath = outputPath.toString() + "/abc.mp4";
-					attachPhoto(dataPath);
+					attachVideo(dataPath);
 				}
 			});
 			
@@ -423,9 +445,27 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 	    return byteBuffer.toByteArray();
 	}
 	/*****************End of FB Integration******************************/
+	/****************Start of utube*************************/
+	private void attachVideoFrmUtube( String path ) {
+		ContentValues content = new ContentValues(4);
+	    content.put(Video.VideoColumns.TITLE, "My Test");
+	    content.put(Video.VideoColumns.DATE_ADDED,
+	    System.currentTimeMillis() / 1000);
+	    content.put(Video.Media.MIME_TYPE, "video/mp4");
+	    content.put(MediaStore.Video.Media.DATA, path);
+	    ContentResolver resolver = getContentResolver();
+	    Uri uri = resolver.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI,
+	    content);
+
+	    Intent intent = new Intent(Intent.ACTION_SEND);
+	    intent.setType("video/*");
+	    intent.putExtra(Intent.EXTRA_STREAM, uri);
+	    startActivity(Intent.createChooser(intent, "Share using"));
+	}
+	/*****************End of utube ************************/
 	
 	/*****************Start of Email****************************/
-	private void attachPhoto( String path ) {
+	private void attachVideo( String path ) {
 		  //Toast.makeText(getApplicationContext(), "path: "+ path , Toast.LENGTH_LONG).show();
 		  Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
 		  //  emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, emailSignature);
@@ -490,38 +530,5 @@ public class SelectedImageActivity extends Activity implements OnClickListener{
 		
 	}
 	
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Log.i("HA", "Finishing");
-		// Toast.makeText(ActivityResturantList.this,"hiiiiiiiii",Toast.LENGTH_LONG).show();
-
-		if (isTaskRoot()&&(keyCode == KeyEvent.KEYCODE_BACK)) {
-			// Ask the user if they want to quit
-			new AlertDialog.Builder(this)
-					//.setTitle("")
-					.setMessage("Do you want to exit?")
-					.setPositiveButton("Ok",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// Stop the activity
-									System.exit(0);
-								}
-							})
-					.setNegativeButton("Cancel",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// Stop the activity
-									dialog.cancel();
-								}
-							}).show();
-			return true;
-
-		}else {
-			return super.onKeyDown(keyCode, event);
-        }
-		
-	}
-
 
 }

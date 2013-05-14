@@ -13,7 +13,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <ViewSwitcher
+         <ViewSwitcher
             android:id="@+id/switcher"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -22,15 +22,15 @@
             android:outAnimation="@anim/fade_out" >
 
             <ImageView
-                android:id="@+id/image"
+                android:id="@+id/prevImageView"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
 
             <ImageView
-                android:id="@+id/image1"
+                android:id="@+id/nextImageView"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
-        </ViewSwitcher>
+         </ViewSwitcher> 
         
     </RelativeLayout>
     <LinearLayout

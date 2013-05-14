@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.bpd.smilemorph.R;
 
 public class CreateMorphActivity extends Activity implements OnClickListener {
 	TextView addMorph;

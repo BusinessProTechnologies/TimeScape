@@ -7,7 +7,9 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.VideoView;
+import com.bpd.smilemorph.R;
 
 public class ActivitySplashScreen extends Activity implements OnCompletionListener{
 	
@@ -17,13 +19,15 @@ public class ActivitySplashScreen extends Activity implements OnCompletionListen
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.activity_splash);
-	    
+	    Log.i("test0","test0");
 	    String path = "android.resource://" + getPackageName()+"/raw/splash";
 	    VideoView video = (VideoView) findViewById(R.id.videoView);
         //video.setVideoPath("android.resource://" +getPackageName()+ "raw/splash");
 	    video.setVideoURI(Uri.parse(path));
 	    video.setVideoPath(path);
+	    Log.i("test","test");
         video.start();
+        Log.i("tests","tests");
         video.setOnCompletionListener(this);
 	}
 	
@@ -31,6 +35,7 @@ public class ActivitySplashScreen extends Activity implements OnCompletionListen
     public void onCompletion(MediaPlayer mp)
     {
         Intent intent = new Intent(this, MainActivity.class);
+        Log.i("test1","test1");
         startActivity(intent);
         finish();
     }

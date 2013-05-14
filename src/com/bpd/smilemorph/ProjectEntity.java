@@ -1,5 +1,7 @@
 package com.bpd.smilemorph;
 
+import com.bpd.smilemorph.R;
+
 public class ProjectEntity {
 
 public static String TABLE_NAME = "MorphTb";

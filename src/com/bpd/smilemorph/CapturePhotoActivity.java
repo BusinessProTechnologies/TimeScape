@@ -25,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
+import com.bpd.smilemorph.R;
 
 @TargetApi(Build.VERSION_CODES.GINGERBREAD)
 public class CapturePhotoActivity extends Activity implements OnClickListener {

@@ -1,5 +1,6 @@
 package com.bpd.smilemorph;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,9 +30,9 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bpd.database.DatabaseHandler;
+import com.bpd.utils.Utils;
 
 public class SelectedImageSettingsActivity extends Activity implements OnClickListener{
 
@@ -46,11 +48,18 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 	private MyPagerAdapter adapter;
 	private ViewPager myPager;
 	private String imageStg;
+	int imgHeight,imgWidth,pagerWt,pagerHt;
+	DisplayMetrics displaymetrics;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_selectedimagesttngs);
 		
+		displaymetrics = new DisplayMetrics();
+		getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+		imgHeight = displaymetrics.heightPixels;
+		imgWidth = displaymetrics.widthPixels;
+		Log.i("width+height",imgWidth+"-"+imgHeight);
 		
 		arrylst_seperator =new ArrayList<String>();
 		Bundle extras = getIntent().getExtras();
@@ -96,6 +105,9 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 		noImages.setText(String.valueOf(arrylst_seperator.size()) + " image(s)");
 		adapter = new MyPagerAdapter();
 	    myPager = (ViewPager) findViewById(R.id.delimagepanelpager);
+	    pagerWt = myPager.getMeasuredWidth();
+	    pagerHt = myPager.getMeasuredHeight();
+	    Log.i("pager width height",pagerWt+""+pagerHt);
 	    myPager.setAdapter(adapter);
 	    myPager.setCurrentItem(0);
 	    myPager.setHorizontalFadingEdgeEnabled(true);
@@ -143,6 +155,10 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 			            		if(pos == i){*/
 			            			//adapter.myPager.remove(separated[i]);
 			            			Log.i("pos", pos+" "+arrylst_seperator.get(pos));
+			            			//
+			            			Log.i("imageFile",arrylst_seperator.get(pos));
+			            			//File file = new File(arrylst_seperator.get(pos));
+			            			//file.delete();
 			            			arrylst_seperator.remove(pos);
 			            			Log.i("pos11", pos+" "+arrylst_seperator.size());
 			            			noImages.setText(String.valueOf(arrylst_seperator.size()) + " image(s)");
@@ -172,7 +188,7 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 	       
 	        
 	        BitmapFactory.Options bfo = new BitmapFactory.Options();  
-		    bfo.inSampleSize = 4;   
+		    bfo.inSampleSize = Utils.calculateInSize(bfo, imgWidth, imgHeight);//4;   imgHeight,imgWidth  pagerWt, pagerHt
 		    Log.i("arrylst_seperator", arrylst_seperator.get(position));
 		    Bitmap ThumbImage = BitmapFactory.decodeFile(arrylst_seperator.get(position),bfo); 
 		    //ThumbImage = Bitmap.createScaledBitmap(ThumbImage, 200, 200, false);
@@ -212,6 +228,29 @@ public class SelectedImageSettingsActivity extends Activity implements OnClickLi
 	    }
 		
 	}
+	
+	public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+    // Raw height and width of image
+    final int height = options.outHeight;
+    final int width = options.outWidth;
+    int inSampleSize = 1;
+
+    if (height > reqHeight || width > reqWidth) {
+
+        // Calculate ratios of height and width to requested height and width
+        final int heightRatio = Math.round((float) height / (float) reqHeight);
+        final int widthRatio = Math.round((float) width / (float) reqWidth);
+
+        // Choose the smallest ratio as inSampleSize value, this will guarantee
+        // a final image with both dimensions larger than or equal to the
+        // requested height and width.
+        inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+    }
+
+    return inSampleSize;
+}
+	
 	@Override
 	public void onClick(View v) {
 		// TODO Auto-generated method stub

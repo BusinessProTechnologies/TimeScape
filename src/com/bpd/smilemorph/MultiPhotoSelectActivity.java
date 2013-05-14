@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bpd.database.DatabaseHandler;
+import com.bpd.smilemorph.R;
 
 public class MultiPhotoSelectActivity extends Activity implements
 		OnClickListener {
@@ -204,18 +205,22 @@ public class MultiPhotoSelectActivity extends Activity implements
 					CheckBox cb = (CheckBox) v;
 					int id = cb.getId();
 					
-					if (thumbnailsselection[id]) {
+					/*if (thumbnailsselection[id]) {
 						cb.setChecked(false);
 						thumbnailsselection[id] = false;
-					} else {
+					} else {*/
 						if(update == 1){
+							if (thumbnailsselection[id]) {
+								cb.setChecked(false);
+								thumbnailsselection[id] = false;
+							} else {
 							selectImages = extras.getString("imageString");
 							String[] separated = selectImages.replace("|", ",").split(",");
 							String selectedImg = arrPath[id].substring(
 									arrPath[id].lastIndexOf("/") + 1,
 									arrPath[id].length());
-							
-							for (int i = 0; i < separated.length; i++) {
+							int i;
+							for (i = 0; i < separated.length; i++) {
 								imageName = separated[i].substring(
 										separated[i].lastIndexOf("/") + 1,
 										separated[i].length());
@@ -229,19 +234,26 @@ public class MultiPhotoSelectActivity extends Activity implements
 									cb.setChecked(false);
 									thumbnailsselection[id] = false;
 									//imageAdapter.notifyDataSetChanged();
-									
-								}else{
-									cb.setChecked(true);
-									thumbnailsselection[id] = true;
+									break;
 								}
 							}
-						}else{
-						cb.setChecked(true);
-						Log.i("id",id+"");
-						Log.i("arrPath[id]",arrPath[id]);
-						thumbnailsselection[id] = true;
+							if(i == separated.length){
+								cb.setChecked(true);
+								thumbnailsselection[id] = true;
+							}
 						}
-					}
+						}else { 
+							if (thumbnailsselection[id]) {
+								cb.setChecked(false);
+								thumbnailsselection[id] = false;
+							} else {
+							cb.setChecked(true);
+							Log.i("id",id+"");
+							Log.i("arrPath[id]",arrPath[id]);
+							thumbnailsselection[id] = true;
+							}
+						}
+					//}
 				}
 			});
 			holder.imageview.setOnClickListener(new OnClickListener() {

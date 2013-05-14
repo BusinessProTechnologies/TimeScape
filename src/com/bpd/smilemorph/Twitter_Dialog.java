@@ -19,6 +19,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.bpd.smilemorph.R;
 
 @SuppressLint("SetJavaScriptEnabled")
 public class Twitter_Dialog extends Dialog{

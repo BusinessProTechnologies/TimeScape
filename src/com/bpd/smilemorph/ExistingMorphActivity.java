@@ -34,6 +34,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bpd.database.DatabaseHandler;
+import com.bpd.smilemorph.R;
 import com.bpd.utils.Utils;
 
 public class ExistingMorphActivity extends Activity implements OnClickListener {
@@ -48,6 +49,7 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 	boolean showDelete = false;
 	String morphName,imageString;
 	ImageView editBtn,backBtn,doneBtn;
+	Drawable drawableImage;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -131,7 +133,7 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 					project.setName(cursor.getString(cursor.getColumnIndex("morphname")));
 					project.setImgString(cursor.getString(cursor.getColumnIndex("imagestring")));
 					project.setImgNumber(Integer.parseInt(cursor.getString(cursor.getColumnIndex("noimges"))));
-		            // Adding contact to list
+		            // Adding to list
 		            projectList.add(project);
 					//Log.i("name",name);
 				}while(cursor.moveToNext());
@@ -196,10 +198,14 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 		    String[] separated = imgString.replace("|", ",").split(",");
 		    BitmapFactory.Options bfo = new BitmapFactory.Options();  
 		    bfo.inSampleSize = 8;   
+		    Log.i("separated.length",separated.length+""+separated[0]);
+		    if(separated.length > 1){
 		    Bitmap ThumbImage = BitmapFactory.decodeFile(separated[0],bfo); 
 		    ThumbImage = Bitmap.createScaledBitmap(ThumbImage, 70, 70, false);
-
-		    Drawable drawableImage = new BitmapDrawable(getResources(),ThumbImage); 
+		    drawableImage = new BitmapDrawable(getResources(),ThumbImage); 
+		    }else{
+		    drawableImage	= getResources().getDrawable(R.drawable.cellicon);	
+		    }
 		    //Log.i("drawableImage", drawableImage+"");
 		    projImg.setImageDrawable(drawableImage);
 		    rowView.setTag(values.get(position).getID());
@@ -308,34 +314,5 @@ public class ExistingMorphActivity extends Activity implements OnClickListener {
 			listView.setAdapter(adpt);
 		}
 	}
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		Log.i("HA", "Finishing");
-		if (isTaskRoot()&&(keyCode == KeyEvent.KEYCODE_BACK)) {
-			// Ask the user if they want to quit
-			new AlertDialog.Builder(this)
-					//.setTitle("")
-					.setMessage("Do you want to exit?")
-					.setPositiveButton("Ok",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// Stop the activity
-									System.exit(0);
-								}
-							})
-					.setNegativeButton("Cancel",
-							new DialogInterface.OnClickListener() {
-								public void onClick(DialogInterface dialog,
-										int which) {
-									// Stop the activity
-									dialog.cancel();
-								}
-							}).show();
-			return true;
-
-		}else {
-			return super.onKeyDown(keyCode, event);
-        }
-		
-	}
+	
 }

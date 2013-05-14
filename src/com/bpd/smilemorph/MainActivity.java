@@ -11,7 +11,9 @@ import twitter4j.conf.ConfigurationBuilder;
 import twitter4j.http.AccessToken;
 import twitter4j.http.RequestToken;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -21,6 +23,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -35,6 +38,7 @@ import com.bpd.facebook.Facebook.DialogListener;
 import com.bpd.facebook.FacebookError;
 import com.bpd.facebook.SessionStore;
 import com.bpd.facebook.Util;
+import com.bpd.smilemorph.R;
 import com.bpd.twitter.TwitterUtils;
 
 public class MainActivity extends Activity implements OnClickListener {
@@ -316,4 +320,37 @@ public class MainActivity extends Activity implements OnClickListener {
         return mSharedPreferences.getBoolean(PREF_KEY_TWITTER_LOGIN, false);
     }
 	/******************End For Twitter******************/
+	
+	/*public boolean onKeyDown(int keyCode, KeyEvent event) {
+		Log.i("HA", "Finishing");
+		// Toast.makeText(ActivityResturantList.this,"hiiiiiiiii",Toast.LENGTH_LONG).show();
+
+		if (isTaskRoot()&&(keyCode == KeyEvent.KEYCODE_BACK)) {
+			// Ask the user if they want to quit
+			new AlertDialog.Builder(this)
+					//.setTitle("")
+					.setMessage("Do you want to exit?")
+					.setPositiveButton("Ok",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// Stop the activity
+									System.exit(0);
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog,
+										int which) {
+									// Stop the activity
+									dialog.cancel();
+								}
+							}).show();
+			return true;
+
+		}else {
+			return super.onKeyDown(keyCode, event);
+        }
+		
+	}*/
 }

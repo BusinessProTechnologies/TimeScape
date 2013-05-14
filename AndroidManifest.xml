@@ -5,8 +5,8 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="8" />
+        android:minSdkVersion="14"
+        android:targetSdkVersion="17" />
 
     <uses-feature android:name="android.hardware.camera" />
 	<uses-feature android:name="android.hardware.camera.autofocus" />
@@ -34,27 +34,27 @@
             </intent-filter>
         </activity>
          <activity
-            android:name=".MainActivity"
+            android:name="com.bpd.smilemorph.MainActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" /> 
         <activity
-            android:name=".SetProjectNameActivity"
+            android:name="com.bpd.smilemorph.SetProjectNameActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".CreateMorphActivity"
+            android:name="com.bpd.smilemorph.CreateMorphActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ExistingMorphActivity"
+            android:name="com.bpd.smilemorph.ExistingMorphActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".MultiPhotoSelectActivity"
+            android:name="com.bpd.smilemorph.MultiPhotoSelectActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
@@ -64,27 +64,27 @@
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ImagePostingActivity"
+            android:name="com.bpd.smilemorph.ImagePostingActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
             <activity
-            android:name=".SelectedImageActivity"
+            android:name="com.bpd.smilemorph.SelectedImageActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
             <activity
-            android:name=".PlayMorphActivity"
+            android:name="com.bpd.smilemorph.PlayMorphActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
              <activity
-            android:name=".SelectedImageSettingsActivity"
+            android:name="com.bpd.smilemorph.SelectedImageSettingsActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />
              <activity
-            android:name=".createVideoActivity"
+            android:name="com.bpd.smilemorph.createVideoActivity"
             android:configChanges="orientation"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
             android:screenOrientation="landscape" />

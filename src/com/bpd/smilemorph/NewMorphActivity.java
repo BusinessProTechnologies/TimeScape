@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.EditText;
+import com.bpd.smilemorph.R;
 
 public class NewMorphActivity extends Activity{
 

@@ -22,6 +22,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent" />
         </ViewSwitcher>
-        
+        <ImageView 
+            	android:id="@+id/watermark"
+            	android:layout_width="wrap_content"
+            	android:layout_height="wrap_content"
+            	android:src="@drawable/tslogo"
+            	android:layout_alignParentLeft="true"
+            	android:layout_alignParentBottom="true"
+            	android:paddingLeft="20dp"
+            	android:paddingBottom="20dp"/>
    
 </RelativeLayout>
